@@ -10,7 +10,7 @@ pkill -f testbot.py >> restart.log 2>&1 || true
 sleep 3
 
 echo "$(date): Запуск нового процесса..." >> restart.log
-nohup /***/testbot/venv/bin/python /***/testbot/testbot.py > /***/testbot/log.txt 2>&1 &
+nohup /root/testbot/venv/bin/python /root/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
 NEW_PID=$!
 echo "$(date): Бот запущен с PID: $NEW_PID" >> restart.log
 
