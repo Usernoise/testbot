@@ -17,7 +17,14 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /путь/до/твоего/бота
+            cd /root/testbot  # Укажи путь до каталога с ботом
             git pull origin main
+
+            # Установка зависимостей (если есть requirements.txt)
+            if [ -f requirements.txt ]; then
+              pip3 install -r requirements.txt
+            fi
+
+            # Перезапуск бота
             pkill -f testbot.py || true
             nohup python3 testbot.py > log.txt 2>&1 &
