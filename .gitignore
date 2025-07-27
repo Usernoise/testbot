@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+
+# IDE/JetBrains/PyCharm
+.idea/
+
+# Logs
+*.log
+log.txt
+
+# OS files
+.DS_Store
+
+# SSH files, если случайно сюда попадут
+*.pem
+*.pub
+id_rsa*
