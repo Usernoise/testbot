@@ -19,7 +19,13 @@ jobs:
           script: |
             cd /root/testbot
             git pull origin main
-            echo "Running processes:"
-            ps aux | grep testbot.py
+            echo "Stopping existing bot..."
             pkill -f testbot.py || true
-            nohup python3 /root/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
+            sleep 2
+            while pgrep -f testbot.py; do
+              echo "Waiting for bot to shut down..."
+              sleep 1
+            done
+            echo "Starting bot..."
+            nohup python3 /root/testbot/testbot.py&
+          
