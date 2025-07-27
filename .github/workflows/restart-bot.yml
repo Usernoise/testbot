@@ -18,6 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /root/testbot
+            git reset --hard
             git pull origin main
             echo "Останавливаем старый бот..."
             pkill -f testbot.py || true
@@ -28,3 +29,6 @@ jobs:
             done
             echo "Запускаем бот..."
             nohup python3 testbot.py > log.txt 2>&1 &
+            sleep 2
+            echo "Проверка запущенных процессов:"
+            ps aux | grep testbot.py
