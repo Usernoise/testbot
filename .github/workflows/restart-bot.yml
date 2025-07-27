@@ -17,16 +17,14 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /root/testbot/testbot
+            cd /root/testbot
             git pull origin main
-            echo "Stopping existing bot..."
+            echo "Останавливаем старый бот..."
             pkill -f testbot.py || true
             sleep 2
             while pgrep -f testbot.py; do
-              echo "Waiting for bot to shut down..."
+              echo "Ждём завершения процесса..."
               sleep 1
             done
-            echo "Starting bot..."
-            cd /root/testbot/testbot
-            nohup python3 testbot.py &
-          
+            echo "Запускаем бот..."
+            nohup python3 testbot.py > log.txt 2>&1 &
