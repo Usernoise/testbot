@@ -31,8 +31,10 @@ jobs:
             done
             
             echo "Активируем виртуальное окружение и запускаем бот..."
-            source /root/testbot/venv/bin/activate
-            nohup python /root/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
+            bash -c "
+              . /root/testbot/venv/bin/activate
+              nohup python /root/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
+            "
             
             sleep 3
             
@@ -41,3 +43,4 @@ jobs:
             
             echo "Вывод последних строк лога:"
             tail -n 30 /root/testbot/log.txt
+
