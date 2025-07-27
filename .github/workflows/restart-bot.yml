@@ -16,8 +16,3 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             bash /root/testbot/restart_bot.sh
-            sleep 2
-            echo "Последние строки лога перезапуска:"
-            tail -n 10 /root/testbot/restart.log
-            echo "Проверка процесса:"
-            ps aux | grep testbot.py | grep -v grep || echo "Процесс не найден"
