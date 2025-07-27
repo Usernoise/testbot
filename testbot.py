@@ -1,3 +1,5 @@
+with open("start_debug.log", "a") as f:
+    f.write("Bot started\n")
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
