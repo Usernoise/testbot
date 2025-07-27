@@ -1,14 +1,11 @@
 name: Перезапуск Telegram-бота
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Подключение к серверу и перезапуск бота
         uses: appleboy/ssh-action@v1.0.3
@@ -19,16 +16,51 @@ jobs:
           script: |
             cd /***/testbot || exit 1
             
+            echo "=== Обновление кода ==="
             git reset --hard
             git pull origin main
+            
+            echo "=== Остановка старого процесса ==="
             pkill -f testbot.py || true
-          
-            echo "Запускаем бот через python из venv..."
-            nohup /***/testbot/venv/bin/python /***/testbot/testbot.py > /***/testbot/log.txt 2>&1 &
+            sleep 3
             
-            echo "Проверка запущенных процессов:"
-            ps aux | grep testbot.py
+            echo "=== Проверка что процесс завершился ==="
+            if pgrep -f testbot.py; then
+                echo "Принудительно завершаем процесс..."
+                pkill -9 -f testbot.py || true
+                sleep 2
+            fi
             
-            echo "Вывод последних строк лога:"
-            tail -n 30 /***/testbot/log.txt
-
+            echo "=== Запуск нового процесса ==="
+            # Очищаем лог файл
+            > /***/testbot/log.txt
+            
+            # Запускаем с максимальной изоляцией от SSH сессии
+            setsid nohup /***/testbot/venv/bin/python /***/testbot/testbot.py > /***/testbot/log.txt 2>&1 < /dev/null &
+            
+            # Сохраняем PID
+            echo $! > /***/testbot/bot.pid
+            
+            echo "=== Ожидание запуска ==="
+            sleep 5
+            
+            echo "=== Проверка процесса ==="
+            if pgrep -f testbot.py; then
+                echo "✅ Бот успешно запущен!"
+                ps aux | grep testbot.py | grep -v grep
+            else
+                echo "❌ Бот не запустился!"
+            fi
+            
+            echo "=== Проверка лога ==="
+            if [ -s /***/testbot/log.txt ]; then
+                echo "Последние строки лога:"
+                tail -n 20 /***/testbot/log.txt
+            else
+                echo "Лог файл пуст или не создан"
+            fi
+            
+            echo "=== Информация о Python окружении ==="
+            echo "Python путь: /***/testbot/venv/bin/python"
+            /***/testbot/venv/bin/python --version
+            echo "Рабочая директория: $(pwd)"
