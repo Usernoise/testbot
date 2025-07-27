@@ -1,22 +1,13 @@
-name: Перезапуск Telegram-бота
-on:
-  push:
-    branches:
-      - main
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Перезапуск бота
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            /root/testbot/restart_bot.sh
-            sleep 2
-            echo "Последние строки лога перезапуска:"
-            tail -n 5 /root/testbot/restart.log
-            echo "Проверка процесса:"
-            ps aux | grep testbot.py | grep -v grep || echo "Процесс не найден"
+- name: Перезапуск бота
+  uses: appleboy/ssh-action@v1.0.3
+  with:
+    host: ${{ secrets.SSH_HOST }}
+    username: ${{ secrets.SSH_USER }}
+    key: ${{ secrets.SSH_KEY }}
+    script: |
+      bash /root/testbot/restart_bot.sh
+      sleep 2
+      echo "Последние строки лога перезапуска:"
+      tail -n 5 /root/testbot/restart.log
+      echo "Проверка процесса:"
+      ps aux | grep testbot.py | grep -v grep || echo "Процесс не найден"
