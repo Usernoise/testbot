@@ -19,5 +19,7 @@ jobs:
           script: |
             cd /root/testbot
             git pull origin main
+            echo "Running processes:"
+            ps aux | grep testbot.py
             pkill -f testbot.py || true
             nohup python3 /root/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
