@@ -1,0 +1,23 @@
+name: Перезапуск Telegram-бота
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Подключение к серверу и перезапуск бота
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /путь/до/твоего/бота
+            git pull origin main
+            pkill -f testbot.py || true
+            nohup python3 testbot.py > log.txt 2>&1 &
