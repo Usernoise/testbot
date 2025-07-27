@@ -14,8 +14,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /root/testbot && \
-            git reset --hard && \
-            git pull origin main && \
-            pkill -f testbot.py || true && \
-            nohup /root/testbot/venv/bin/python /***/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
+            /root/testbot/restart_bot.sh
+            sleep 2
+            echo "Последние строки лога перезапуска:"
+            tail -n 5 /root/testbot/restart.log
+            echo "Проверка процесса:"
+            ps aux | grep testbot.py | grep -v grep || echo "Процесс не найден"
