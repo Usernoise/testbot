@@ -28,9 +28,9 @@ jobs:
               sleep 1
             done
             echo "Запускаем бот..."
-            nohup python3 testbot.py > log.txt 2>&1 &
+            /usr/bin/python3 /root/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
             sleep 3
             echo "Проверка запущенных процессов:"
             ps aux | grep testbot.py
             echo "Вывод последних строк лога:"
-            tail -n 20 log.txt
+            tail -n 20 /root/testbot/log.txt
