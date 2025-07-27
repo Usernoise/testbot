@@ -2,7 +2,6 @@
 cd /***/testbot
 
 echo "$(date): Обновление кода..." >> restart.log
-git reset --hard >> restart.log 2>&1
 git pull origin main >> restart.log 2>&1
 
 echo "$(date): Остановка старого процесса..." >> restart.log
