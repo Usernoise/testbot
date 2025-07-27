@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /путь/до/твоего/бота
+            cd /root/testbot
             git pull origin main
             pkill -f testbot.py || true
             nohup python3 testbot.py > log.txt 2>&1 &
