@@ -17,30 +17,18 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /root/testbot || exit 1
+            cd /***/testbot || exit 1
             
             git reset --hard
             git pull origin main
-            
-            echo "Останавливаем старый бот..."
             pkill -f testbot.py || true
-            sleep 2
-            while pgrep -f testbot.py; do
-              echo "Ждём завершения процесса..."
-              sleep 1
-            done
-            
-            echo "Активируем виртуальное окружение и запускаем бот..."
-            bash -c "
-              . /root/testbot/venv/bin/activate
-              nohup python /root/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
-            "
-            
-            sleep 3
+          
+            echo "Запускаем бот через python из venv..."
+            nohup /***/testbot/venv/bin/python /***/testbot/testbot.py > /***/testbot/log.txt 2>&1 &
             
             echo "Проверка запущенных процессов:"
             ps aux | grep testbot.py
             
             echo "Вывод последних строк лога:"
-            tail -n 30 /root/testbot/log.txt
+            tail -n 30 /***/testbot/log.txt
 
