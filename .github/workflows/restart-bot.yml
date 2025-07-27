@@ -14,20 +14,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /***/testbot
-            
-            git reset --hard
-            git pull origin main
-            
-            pkill -f testbot.py || true
-            sleep 2
-            
-            # Запуск с полным путем и проверкой
-            /***/testbot/venv/bin/python /***/testbot/testbot.py > /***/testbot/log.txt 2>&1 &
-            
-            sleep 3
-            echo "Процессы:"
-            ps aux | grep testbot.py | grep -v grep || echo "Процесс не найден"
-            
-            echo "Лог:"
-            head -n 20 /***/testbot/log.txt 2>/dev/null || echo "Лог пуст"
+            cd /root/testbot && \
+            git reset --hard && \
+            git pull origin main && \
+            pkill -f testbot.py || true && \
+            nohup /root/testbot/venv/bin/python /***/testbot/testbot.py > /root/testbot/log.txt 2>&1 &
