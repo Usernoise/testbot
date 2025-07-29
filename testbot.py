@@ -3,8 +3,8 @@ with open("start_debug.log", "a") as f:
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("ХУЙ!! алеха1!!!")
+async def start(update: Update, context: C ontextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("!! алеха1!!!")
 
 if __name__ == '__main__':
     TOKEN = "8413828802:AAHIiFNgyuWeSjDEQBTjKlVuwFRQEZTElSA"
